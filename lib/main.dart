@@ -15,6 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: 'cinemapedia',
       routerConfig: appRoute,
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
