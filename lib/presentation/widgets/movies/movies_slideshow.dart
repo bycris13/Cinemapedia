@@ -1,7 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fadein/flutter_fadein.dart';
 
 class MoviesSlideshow extends StatelessWidget {
   final List<Movie> movies;
@@ -19,14 +19,14 @@ class MoviesSlideshow extends StatelessWidget {
         scale: 0.9,
         autoplay: true,
         pagination: SwiperPagination(
-          margin: EdgeInsetsGeometry.only(top: 0),
-          builder: DotSwiperPaginationBuilder(activeColor: colors.primary),
+          margin: const EdgeInsets.only(top: 0),
+          builder: DotSwiperPaginationBuilder(
+            activeColor: colors.primary,
+            color: colors.secondary,
+          ),
         ),
         itemCount: movies.length,
-        itemBuilder: (context, index) {
-          final movie = movies[index];
-          return _Slide(movie: movie);
-        },
+        itemBuilder: (context, index) => _Slide(movie: movies[index]),
       ),
     );
   }
@@ -50,41 +50,19 @@ class _Slide extends StatelessWidget {
       child: DecoratedBox(
         decoration: decoration,
         child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(20),
-          child: Stack(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Image.network(
-                  movie.backdropPath,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress != null) {
-                      return const DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.black),
-                      );
-                    }
-                    return FadeIn(child: child);
-                  },
-                ),
-              ),
-              Positioned(
-                left: 10,
-                bottom: 15,
+          borderRadius: BorderRadius.circular(20),
+          child: Image.network(
+            movie.backdropPath,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress != null) {
+                return const DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.black12),
+                );
+              }
 
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(80, 0, 0, 0),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    movie.title,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
+              return FadeIn(child: child);
+            },
           ),
         ),
       ),

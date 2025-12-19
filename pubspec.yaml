@@ -7,8 +7,10 @@ environment:
   sdk: ^3.8.1
 
 dependencies:
+  animate_do: ^4.2.0
   card_swiper: ^3.0.1
   dio: ^5.9.0
+  en_card_swiper: ^0.0.1
   flutter:
     sdk: flutter
   flutter_dotenv: ^6.0.0
