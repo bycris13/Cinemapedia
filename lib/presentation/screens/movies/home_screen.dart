@@ -29,21 +29,52 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPge();
+    ref.read(popularMoviesProvider.notifier).loadNextPge();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlidShowProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
 
-    return Column(
-      children: [
-        const CustomeAppbar(),
-        MoviesSlideshow(movies: slideShowMovies),
-        MovieHorizontalListview(
-          movies: nowPlayingMovies,
-          title: 'En cines',
-          subTitle: 'Lunes 20',
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          expandedHeight: 70,
+          title: CustomeAppbar(),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return Column(
+              children: [
+                MoviesSlideshow(movies: slideShowMovies),
+                MovieHorizontalListview(
+                  movies: nowPlayingMovies,
+                  title: 'En cines',
+                  subTitle: 'Lunes 20',
+                  loadNextPage: () =>
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPge(),
+                ),
+                MovieHorizontalListview(
+                  movies: popularMovies,
+                  title: 'Populares',
+                  //subTitle: 'Lunes 20',
+                  loadNextPage: () =>
+                      ref.read(popularMoviesProvider.notifier).loadNextPge(),
+                ),
+                MovieHorizontalListview(
+                  movies: nowPlayingMovies,
+                  title: 'Mejor calificadas',
+                  subTitle: 'Desde siempre',
+                  loadNextPage: () =>
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPge(),
+                ),
+                const SizedBox(height: 20),
+              ],
+            );
+          }, childCount: 1),
         ),
       ],
     );
